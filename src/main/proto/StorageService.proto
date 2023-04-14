@@ -1,0 +1,19 @@
+syntax="proto3";
+option java_multiple_files=true;
+package io.github.nosql;
+
+message InsertItem {
+  string key = 1;
+  bytes value = 2;
+}
+
+message Response {
+  string _id = 1;
+  string key = 2;
+  bytes value = 3;
+  uint64 timestamp = 4;
+}
+
+service StorageService {
+  rpc insertItem(InsertItem) returns (Response);
+}
