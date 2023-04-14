@@ -1,6 +1,7 @@
 package io.github.nosql.infrastructure;
 
 import io.github.nosql.application.StorageRepository;
+import io.github.nosql.exception.KeyAlreadyExists;
 import io.github.nosql.model.Data;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,5 +23,12 @@ class HashMapStorageRepositoryTest {
         storageRepository.persist("foo", data);
 
         Assertions.assertEquals(data, storageRepository.findByKey("foo").orElse(null));
+    }
+
+    @Test
+    void shouldThrowExceptionIfTheGivenKeyAlreadyExists() {
+        Data data = new Data("fpp".getBytes(StandardCharsets.UTF_8));
+        storageRepository.persist("foo", data);
+        Assertions.assertThrows(KeyAlreadyExists.class, () -> storageRepository.persist("foo", data));
     }
 }
